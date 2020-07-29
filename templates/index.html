@@ -1,0 +1,50 @@
+{% extends 'layout.html' %}
+
+
+{% block head %}
+    <title>Codecool Series</title>
+{% endblock head %}
+
+
+{% block body %}
+    <div id="body-wrapper">
+        <header class="clearfix">
+            <img id="header-logo" src="{{ url_for('static', filename='assets/codecool-logo.png') }}" alt="Codecool Logo">
+            <span id="header-title" class="title">
+                            Codecool Series DB
+                        </span>
+            <div id="header-auth">
+                <a href="{{ url_for('shows_by_rating_desc', num=1) }}"><button type="button" id="bt_most_rated_shows">Most rated shows</button></a>
+                <button type="button" id="bt_register">Register</button>
+                <button type="button" id="bt_login">Login</button>
+            </div>
+        </header>
+        
+        <section>
+            <nav class="breadcrumb">
+                <a href="{{ url_for('index') }}">Home</a>
+            </nav>
+            <h1 class="title text-center">Welcome page</h1>
+            <div class="card">
+                <h2>Welcome TV show lovers!</h2>
+                <p>This great site is happy to bring you your favourite TV show's <i>details</i>.</p>
+            </div>
+            <div class="card">
+                <ul>
+                    {% for show in shows %}
+                        <li>
+                            <a href="{{ url_for('show_id', id=show.id) }}">{{ show.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </section>
+        <footer>
+            Copyright - Despanu Media in association with Codecool
+        </footer>
+    </div>
+    <div class="background">
+        <div class="dark-blue-layer"></div>
+        <div class="light-blue-layer"></div>
+    </div>
+{% endblock body %}

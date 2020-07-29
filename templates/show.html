@@ -1,0 +1,85 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    <title>Codecool-Series | {{ show[0]['title'] }}</title>
+{% endblock head %}
+
+{% block body %}
+<div id="body-wrapper">
+    <header class="clearfix">
+        <img id="header-logo" src="{{ url_for('static', filename='assets/codecool-logo.png') }}" alt="Codecool Logo">
+        <span id="header-title" class="title">
+                        Codecool Series DB
+                    </span>
+        <div id="header-auth">
+            <button type="button" id="bt_register">Register</button>
+            <button type="button" id="bt_login">Login</button>
+        </div>
+    </header>
+    <section>
+        <nav class="breadcrumb">
+            <a href="{{ url_for('index') }}">Home</a>
+            <span class="separator">&gt;</span>
+            <a href="{{ url_for('shows_by_rating_desc', num=1) }}">Shows</a>
+            <span class="separator">&gt;</span>
+            <a href="{{ url_for('show_id', id=show[0]['id']) }}">{{ show[0]['title'] }}</a>
+        </nav>
+        <h1 class="title text-center">{{ show[0]['title'] }}</h1>
+        <div class="card">
+            <h2>Seasons</h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Overview</th>
+                </tr>
+                </thead>
+                <tbody>
+                    {% for season in show_seasons %}
+                        <tr>
+                            <td>{{ season.title }}</td>
+                            <td>{{ season.overview }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="card detailed-view">
+            <h2>Details</h2>
+            <div class="row">
+                <div class="col col-twothird">
+                    <h2>{{ show[0]['title'] }}</h2>
+                    <p class="small grayed">{{ show[0]['runtime'] }} <span class="separator">|</span> {% for genre in genres %}
+                        {% if show[0]['id'] == genre.show_id %}
+                            {{ genre.name + '  ' }}
+                        {% endif %}
+                    {% endfor %} <span
+                            class="separator">|</span> {{ show[0]['year'] }}</p>
+                    <p>{{ show[0]['overview'] }}</p>
+                </div>
+            </div>
+            <div>
+                <p><b>Stars:</b>&nbsp;{% for actor in actors %}
+                    {% if show[0]['id'] == actor.show_id %}
+                        <a href="#">{{ actor.name }}</a>{{ ', ' }}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            <h2>Trailer</h2>
+            <iframe class="trailer" width="480" height="270" src="{{ show[0].trailer | replace('watch?v=', 'embed/')  }}"
+                frameborder="0"
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen
+                class="poster col col-third">
+            </iframe>
+        </div>
+    </section>
+    <footer>
+        Copyright - Despanu Media in association with Codecool
+    </footer>
+</div>
+<div class="background">
+    <div class="dark-blue-layer"></div>
+    <div class="light-blue-layer"></div>
+</div>
+{% endblock body %}

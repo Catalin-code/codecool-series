@@ -1,0 +1,101 @@
+{% extends 'layout.html' %}
+
+{% block head %}
+    <title>Codecool-Series | Shows</title>
+{% endblock head %}
+
+{% block body %}
+    <div id="body-wrapper">
+        <header class="clearfix">
+            <img id="header-logo" src="{{ url_for('static', filename='assets/codecool-logo.png') }}" alt="Codecool Logo">
+            <span id="header-title" class="title">
+                            Codecool Series DB
+                        </span>
+            <div id="header-auth">
+                <button type="button" id="bt_register">Register</button>
+                <button type="button" id="bt_login">Login</button>
+            </div>
+        </header>
+        <section>
+            <nav class="breadcrumb">
+                <a href="{{ url_for('index') }}">Home</a>
+                <span class="separator">&gt;</span>
+                <a href="{{ url_for('shows_by_rating_desc', num=1) }}">Shows</a>
+            </nav>
+            <h1 class="title text-center">Most rated shows</h1>
+            <div class="card">
+                <table>
+                    <tr><th><a href="{{ url_for('shows_by_title_desc', num=1) }}">Movie Title</a></th>
+                        <th><a href="{{ url_for('shows_by_year_desc', num=1) }}">Release Year</a></th>
+                        <th><a href="{{ url_for('shows_by_length_desc', num=1) }}">Avgerage Runtime(min)</a></th>
+                        <th>
+                            {% if sorted == 1 %}
+                                <a href="{{ url_for('shows_by_rating_asc', num=1) }}">Rating ⇩</a>
+                            {% else %}
+                                <a href="{{ url_for('shows_by_rating_desc', num=1) }}">Rating ⇧</a>
+                            {% endif %}
+                        </th>
+                        <th>Genres</th>
+                        <th>Trailer</th>
+                        <th>Homepage</th>
+                    </tr>
+                    {% for show in shows %}
+                        <tr>
+                            <td><a href="{{ url_for('show_id', id=show.id) }}">{{ show.title }}</a></td>
+                            <td>{{ show.year }}</td>
+                            <td>{{ show.runtime }}</td>
+                            <td>{{ show.rating }}</td>
+                            <td>{% for genre in genres %}
+                                    {% if show.id == genre.show_id %}
+                                        {{ genre.name + '  ' }}
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% if show.trailer == None %}
+                                    {{ 'No URL' }}
+                                {% else %}
+                                    <a href="{{ show.trailer }}" target="_blank">{{ show.trailer }}</a>
+                                {% endif %}
+                            </td>
+            
+                            <td>
+                                {% if show.homepage == None %}
+                                    {{ 'No URL' }}
+                                {% else %}
+                                    <a href="{{ show.homepage }}" target="_blank">{{ show.homepage }}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                <div class="pagination">
+                    {% if num == 1  %}
+                        <a href="{{ url_for('shows_by_rating_desc', num=num - 1) }}"><button disabled> << </button></a>
+                    {% else %}
+                        <a href="{{ url_for('shows_by_rating_desc', num=num - 1) }}"><button> << </button></a>
+                    {% endif %}
+                    
+            
+                    {% for page in pages %}
+                        <a href="{{ url_for('shows_by_rating_desc', num=page) }}"><button>{{ page }}</button></a>
+                    {% endfor %}
+            
+                    {% if num == pages|length %}
+                    <a href="{{ url_for('shows_by_rating_desc', num=num + 1) }}"><button disabled> >> </button></a>
+                    {% else %}
+                        <a href="{{ url_for('shows_by_rating_desc', num=num + 1) }}"><button> >> </button></a>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+        <footer>
+            Copyright - Despanu Media in association with Codecool
+        </footer>
+    </div>
+    <div class="background">
+        <div class="dark-blue-layer"></div>
+        <div class="light-blue-layer"></div>
+    </div>
+{% endblock body %}
